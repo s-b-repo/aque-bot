@@ -1,0 +1,15 @@
+node_modules
+dist
+.git
+.env
+.env.*
+*.log
+trades_log.json
+executed_signals.json
+executor_state.json
+*.corrupt-*
+*.tmp
+backtest/last-run.json
+.claude
+mt4
+mt5

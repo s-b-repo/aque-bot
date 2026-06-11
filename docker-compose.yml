@@ -1,0 +1,61 @@
+# NEXUS·SMC — full stack in one command:  docker compose up --build
+# Dashboard + API on http://localhost:3001 ; executor runs in PAPER mode by default.
+#
+# ⚠ BEFORE going live (real exchange keys): in .env set a strong NEXUS_API_TOKEN
+#   (required so /api/executor-config won't serve secrets to the network) AND a
+#   MASTER_KEY (so exchange secrets aren't decryptable from the data volume alone).
+# To go live: set EXECUTOR_BROKER=ccxt, exchange keys, EXECUTOR_LIVE=true
+#   (real money — test on the exchange sandbox first).
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nexus-smc-server
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: "3001"
+      BIND_HOST: "0.0.0.0"
+      DATA_DIR: /app/data
+      MIN_CONFIDENCE: "${MIN_CONFIDENCE:-60}"
+      NEXUS_API_TOKEN: "${NEXUS_API_TOKEN:-}"
+      MASTER_KEY: "${MASTER_KEY:-}"
+    volumes:
+      - nexus-state:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/api/health').then(r=>{process.exit(r.ok?0:1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  executor:
+    build:
+      context: .
+      dockerfile: Dockerfile.executor
+    image: nexus-smc-executor
+    depends_on:
+      server:
+        condition: service_healthy
+    environment:
+      API_URL: http://server:3001
+      EXECUTOR_STATE_FILE: /app/data/executor_state.json
+      EXECUTOR_BROKER: "${EXECUTOR_BROKER:-paper}"
+      EXECUTOR_LIVE: "${EXECUTOR_LIVE:-false}"
+      EXCHANGE_ID: "${EXCHANGE_ID:-binance}"
+      EXCHANGE_TYPE: "${EXCHANGE_TYPE:-spot}"
+      EXCHANGE_API_KEY: "${EXCHANGE_API_KEY:-}"
+      EXCHANGE_API_SECRET: "${EXCHANGE_API_SECRET:-}"
+      EXCHANGE_API_PASSWORD: "${EXCHANGE_API_PASSWORD:-}"
+      RISK_PERCENT: "${RISK_PERCENT:-1}"
+      MIN_CONFIDENCE: "${MIN_CONFIDENCE:-80}"
+      NEXUS_API_TOKEN: "${NEXUS_API_TOKEN:-}"
+    volumes:
+      - nexus-state:/app/data
+    restart: unless-stopped
+
+volumes:
+  nexus-state:

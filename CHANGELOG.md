@@ -1,7 +1,39 @@
 # Changelog
 
-All notable changes to NEXUS·SMC are documented here.
+All notable changes to Aque Bot are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/); this project uses date-based releases.
+
+## [1.1.0] — 2026-06-12
+
+### Added
+- **Rebrand to Aque Bot** across the dashboard, login/setup, API + executor banners, and docs.
+- **Unified, tabbed Settings** (⚙) — Trading · Risk · Data · Account in one place, **fully editable
+  after first-time setup** (swap broker/exchange or paper↔live anytime). LIVE trading now has a
+  confirmation step; ESC/click-away closes; save feedback.
+- **Auto-trade ON/OFF toggle** in the header with a **PAPER / TESTNET / LIVE** mode badge, plus a
+  **BOT ONLINE/OFFLINE** connection indicator.
+- **Wider statistics**: Kelly fraction (+ half-Kelly), recovery factor, MAR, ulcer index, and a
+  **t-statistic edge-significance** test; per-trade Sharpe/Sortino. Surfaced in the dashboard and
+  backtester.
+- **Realtime statistical risk**: the executor folds a fractional-Kelly factor from its *actual*
+  realized edge into sizing (scales up on a proven edge, halves on a losing one), on top of the
+  confidence/streak/drawdown scaling.
+- Master-key encryption can now be derived from a `MASTER_KEY` env (keeps the key off the data volume).
+
+### Fixed (adversarial security/correctness audit)
+- **CRITICAL**: `/api/executor-config` no longer serves decrypted exchange secrets to unauthenticated
+  network clients — it never falls open (loopback-only without a token; token required off-box).
+- Session secret rotates on password change (revokes old tokens); login throttle hardened
+  (per-account + per-IP, pruned, capped); `trust proxy` pinned.
+- Realized **R-multiples** now use the *actual* per-trade risk (fixing the Kelly feedback loop);
+  **Sortino** denominator corrected; Kelly multiplier is continuous (a proven edge is never sized
+  below neutral) and de-risks on a realized loss even without R data.
+- A transient sizing refusal no longer permanently drops a signal (size before claim/mark).
+- Config inputs are coerced/clamped server- and executor-side; `AuthGate` only logs out on a real 401.
+
+### Changed
+- Settings/labels are bot-generic (no more "MT5"-specific text); sample `trades_log.json` cleared —
+  the dashboard shows only real reported trades.
 
 ## [1.0.0] — 2026-06-11
 

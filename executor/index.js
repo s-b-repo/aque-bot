@@ -347,7 +347,7 @@ async function main() {
   liveStats = await report.fetchStats();
 
   console.log('╔══════════════════════════════════════════════╗');
-  console.log('║   NEXUS·SMC Universal Executor                ║');
+  console.log('║   Aque Bot — Universal Executor               ║');
   console.log(`║   Broker:  ${broker.name}`);
   console.log(`║   Risk:    ${config.riskPercent}% | max $${config.maxRiskDollars} | dynamic ${config.dynamicRisk ? 'ON' : 'OFF'} | daily-loss ${config.maxDailyLossPercent}%`);
   console.log(`║   Equity:  $${acct.equity.toFixed(2)} | open ${st.openTrades.length} | halt ${halted}`);

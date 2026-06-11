@@ -1,4 +1,4 @@
-# NEXUS·SMC Trading Bot
+# Aque Bot
 
 Real-time **Smart Money Concepts** (SMC) signal engine with a live React dashboard, a
 Node/Express signal API, a **universal CCXT trade executor** (Docker-deployable), a
@@ -40,13 +40,21 @@ docker compose up --build
   with your username/password.
 - The executor starts in **paper mode** (simulated fills on live prices — no keys, no risk).
 
-### Configure trading from the web UI
+### Configure everything from the web UI
 
-Click **🤖 Bot Settings** in the dashboard header to set the broker (paper/live), exchange, API
-key/secret, risk parameters, smart dynamic risk, and confluence filters — no env editing required.
-Exchange secrets are encrypted at rest and never sent back to the browser; risk/filter changes apply
-live, while broker/exchange/key changes take effect when the executor restarts. (Env vars in
-`.env` still work as defaults / for headless setups.)
+Click **⚙ Settings** in the dashboard header for a single, tabbed control panel — fully editable
+**any time after first-time setup** (swap broker/exchange or paper↔live whenever you like):
+
+- **Trading** — broker (paper / live exchange), exchange, market type, API key/secret, LIVE toggle
+  (with a confirm step), symbol map, auto-trading on/off.
+- **Risk** — sizing, kill-switches/caps, smart dynamic risk, confluence filters.
+- **Data** — Finnhub API key, default timeframe, browser notifications.
+- **Account** — change password, sign out.
+
+Exchange secrets are encrypted at rest and never sent back to the browser. Risk/filter changes apply
+live; broker/exchange/key changes take effect when the executor restarts. (Env vars in `.env` still
+work as defaults / for headless setups.) A header **AUTO-TRADE** switch + **PAPER/TESTNET/LIVE** badge
+make the bot's state obvious at a glance.
 
 ## Quick start — local (Node ≥ 20.12)
 

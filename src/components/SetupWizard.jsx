@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { setup, setToken } from '../config/authClient.js';
-import { C, shell, card, brand, sub, label, input, button, errorBox, note } from './authStyles.js';
+import { C, BRAND, shell, card, brand, sub, label, input, button, errorBox, note } from './authStyles.js';
 
 const row = { display: 'flex', gap: 10 };
 const half = { flex: 1 };
@@ -39,7 +39,7 @@ export default function SetupWizard({ onDone }) {
   return (
     <div style={shell}>
       <form style={{ ...card, maxWidth: 520 }} onSubmit={submit}>
-        <div style={brand}>NEXUS<span style={{ color: C.accent }}>·SMC</span></div>
+        <div style={brand}>{BRAND.lead}<span style={{ color: C.accent }}>{BRAND.accent}</span></div>
         <div style={sub}>First-time setup — create your admin account</div>
 
         <label style={label}>Admin username</label>

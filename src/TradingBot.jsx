@@ -32,8 +32,7 @@ import SignalCard from './components/SignalCard.jsx';
 import NewsPanel from './components/NewsPanel.jsx';
 import EconomicCalendar from './components/EconomicCalendar.jsx';
 import TradesPanel from './components/TradesPanel.jsx';
-import SettingsPanel from './components/SettingsPanel.jsx';
-import BotSettings from './components/BotSettings.jsx';
+import Settings from './components/Settings.jsx';
 import AutoTradeToggle from './components/AutoTradeToggle.jsx';
 import { loadSettings, saveSettings } from './config/settingsStore.js';
 import AnalyticsPanel from './components/AnalyticsPanel.jsx';
@@ -56,7 +55,7 @@ export default function TradingBot() {
   const [timeframe, setTimeframe] = useState(() => loadSettings().defaultTimeframe || '5m');
   const [running, setRunning] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [botSettingsOpen, setBotSettingsOpen] = useState(false);
+  const [settingsTab, setSettingsTab] = useState('trading');
   const [settings, setSettings] = useState(loadSettings);
   const [rightTab, setRightTab] = useState('trades'); // 'trades' | 'signals' | 'news' | 'calendar' | 'analytics'
 
@@ -411,14 +410,20 @@ export default function TradingBot() {
         <div className="dash-header-left">
           <div className="dash-brand">
             <div className="dash-brand-name">
-              NEXUS<span className="accent">·SMC</span>
+              Aque<span className="accent"> Bot</span>
             </div>
-            <div className="dash-brand-sub">Smart Money Concept Engine v3.0</div>
+            <div className="dash-brand-sub">SMC Auto-Trading</div>
           </div>
-          <div className="dash-status">
+          <div className="dash-status" title="Live market data stream (Start/Stop button)">
             <span className={`status-dot ${running ? 'live' : 'paused'}`} />
             <span className={`status-text ${running ? 'live' : 'paused'}`}>
-              {running ? 'LIVE' : 'PAUSED'}
+              {running ? 'STREAMING' : 'PAUSED'}
+            </span>
+          </div>
+          <div className="dash-status" title="Trading bot (executor / EA) connection">
+            <span className="status-dot" style={{ background: bridgeOnline ? '#089981' : '#555', boxShadow: bridgeOnline ? '0 0 6px #089981' : 'none' }} />
+            <span className="status-text" style={{ color: bridgeOnline ? '#089981' : '#6b7084' }}>
+              {bridgeOnline ? 'BOT ONLINE' : 'BOT OFFLINE'}
             </span>
           </div>
           <div className="dash-bias" data-bias={marketBias}>
@@ -443,15 +448,8 @@ export default function TradingBot() {
           </button>
           <button
             className="dash-settings-btn"
-            onClick={() => setBotSettingsOpen(true)}
-            title="Bot Settings — exchange, risk, live trading"
-          >
-            🤖
-          </button>
-          <button
-            className="dash-settings-btn"
-            onClick={() => setSettingsOpen(true)}
-            title="Dashboard Settings"
+            onClick={() => { setSettingsTab('trading'); setSettingsOpen(true); }}
+            title="Settings — trading, risk, data, account"
           >
             ⚙
           </button>
@@ -668,17 +666,15 @@ export default function TradingBot() {
         </div>
       </div>
 
-      {/* Settings Modal — mounted only while open so its draft initializes cleanly */}
+      {/* Unified Settings (trading · risk · data · account) — mounted only while open */}
       {settingsOpen && (
-        <SettingsPanel
+        <Settings
           onClose={() => setSettingsOpen(false)}
           settings={settings}
-          onSave={handleSettingsSave}
+          onSaveSettings={handleSettingsSave}
+          initialTab={settingsTab}
         />
       )}
-
-      {/* Bot Settings (exchange / risk / live trading) */}
-      {botSettingsOpen && <BotSettings onClose={() => setBotSettingsOpen(false)} />}
 
       {/* Toast Notifications */}
       <ToastNotifier toasts={toasts} onDismiss={dismiss} />

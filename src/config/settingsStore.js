@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════════════════
    Settings persistence (localStorage)
    ─────────────────────────────────────────────────────
-   Kept separate from the SettingsPanel component so the
-   panel file only exports a component (Fast Refresh safe).
+   Kept separate from the Settings component so the panel
+   file only exports a component (Fast Refresh safe).
    ═══════════════════════════════════════════════════════ */
 
 const STORAGE_KEY = 'nexus_smc_settings';

@@ -1,4 +1,5 @@
-/* Shared inline styles for the auth/setup/settings screens (dark theme). */
+/* Shared inline styles + brand for the auth/setup/settings screens (dark theme). */
+export const BRAND = { lead: 'Aque', accent: ' Bot', full: 'Aque Bot' };
 export const C = {
   bg: '#0f1117', card: '#161922', card2: '#1a1d27', border: '#2a2e3f',
   text: '#e1e4ea', muted: '#6b7084', accent: '#089981', danger: '#F23645', indigo: '#818cf8',

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { login, setToken } from '../config/authClient.js';
-import { C, shell, card, brand, sub, label, input, button, errorBox } from './authStyles.js';
+import { C, BRAND, shell, card, brand, sub, label, input, button, errorBox } from './authStyles.js';
 
 export default function LoginPage({ onDone, serverError }) {
   const [username, setUsername] = useState('');
@@ -25,7 +25,7 @@ export default function LoginPage({ onDone, serverError }) {
   return (
     <div style={shell}>
       <form style={card} onSubmit={submit}>
-        <div style={brand}>NEXUS<span style={{ color: C.accent }}>·SMC</span></div>
+        <div style={brand}>{BRAND.lead}<span style={{ color: C.accent }}>{BRAND.accent}</span></div>
         <div style={sub}>Sign in to your trading console</div>
 
         <label style={label}>Username</label>

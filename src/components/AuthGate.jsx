@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { getSetupStatus, me, getToken, setToken } from '../config/authClient.js';
 import SetupWizard from './SetupWizard.jsx';
 import LoginPage from './LoginPage.jsx';
-import { C, shell } from './authStyles.js';
+import { C, BRAND, shell } from './authStyles.js';
 
 function Splash({ children }) {
   return (
     <div style={{ ...shell, flexDirection: 'column', gap: 14, color: C.muted }}>
-      <div style={{ fontSize: 22, fontWeight: 800, color: C.text }}>NEXUS<span style={{ color: C.accent }}>·SMC</span></div>
+      <div style={{ fontSize: 22, fontWeight: 800, color: C.text }}>{BRAND.lead}<span style={{ color: C.accent }}>{BRAND.accent}</span></div>
       <div style={{ fontSize: 13 }}>{children}</div>
     </div>
   );

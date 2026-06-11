@@ -693,7 +693,7 @@ loadTradeStore();
 app.listen(PORT, BIND, async () => {
   console.log('');
   console.log('╔══════════════════════════════════════════════╗');
-  console.log('║   NEXUS·SMC Signal API Server               ║');
+  console.log('║   Aque Bot — Signal API Server               ║');
   console.log(`║   Running on http://${BIND}:${PORT}`);
   console.log(`║   Auth: ${API_TOKEN ? 'ENABLED (X-API-Key)' : 'local-only (no token)'}`);
   console.log(`║   Dashboard login: ${auth.needsSetup() ? 'NEEDS FIRST-TIME SETUP' : 'configured'}`);

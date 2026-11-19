@@ -1,0 +1,33 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - name: Install
+        run: npm ci || npm install
+      - name: Lint (report-only)
+        run: npm run lint --if-present
+        continue-on-error: true
+      - name: Typecheck (report-only)
+        run: '[ -f tsconfig.json ] && npx --no-install tsc --noEmit || echo "no tsconfig"'
+        continue-on-error: true
+      - name: Build (report-only)
+        run: npm run build --if-present
+        continue-on-error: true
+      - name: Test
+        run: npm test --if-present
+      - name: npm audit (security, report-only)
+        run: npm audit --audit-level=high || true
+        continue-on-error: true
